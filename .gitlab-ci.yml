@@ -1,0 +1,42 @@
+image: docker:24.0.6
+services:
+  - docker:20.0.6-dind
+
+stages:
+  - reset
+  - build
+  - deploy
+
+variables:
+  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+  APP_NAME: "node-boilerplate"
+
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+remove_last_image:
+  stage: reset
+  tags:
+    - docker
+  script:
+    - docker stop $APP_NAME || true
+    - docker rm $APP_NAME || true
+    - docker rmi $(docker images -q $CONTAINER_RELEASE_IMAGE)
+
+build:
+  stage: build
+  tags:
+    - docker
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker build -t $CONTAINER_RELEASE_IMAGE . 
+    - docker push $CONTAINER_RELEASE_IMAGE
+
+deploy:
+  stage: deploy
+  tags:
+    - docker
+  script:     
+    - docker pull $CONTAINER_RELEASE_IMAGE
+    - docker run --name $APP_NAME -d -p 3000:3000 $CONTAINER_RELEASE_IMAGE
