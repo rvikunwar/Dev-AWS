@@ -89,4 +89,91 @@ docker build -t image_tag <Dockerfile_path>
 ## Docker compose
 It a management tool of docker used for maintaining multiple docker containers at once.
 
+## Gitlab CI/CD
+Gitlab
 
+### GitLab runner 
+Gitlab runner is an application which is used run jobs over a machine and sends result back to gitlab.
+
+Installation on aws ubuntu machine
+
+1. Log into aws remote server using ssh
+```sh
+ssh -i <private_key> ubuntu@server_ip
+```
+
+2. Download gitlab repo and run the script
+```sh
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh > script.deb.sh
+less script.deb.sh
+
+sudo bash script.deb.sh
+```
+
+3. Now install gitlab runner
+```sh
+sudo apt install gitlab-runner
+```
+
+4. Atlast check the status
+```sh
+systemctl status gitlab-runner
+```
+
+After installing GitLab Runner, you need to register it with your GitLab account. Here are the steps:
+
+1. Within your GitLab project, navigate to Settings > CI/CD > Runners.
+2. Add a new runner specific to your project. Configure the settings as needed, and assign a tag. A tag is a user-defined keyword used to identify GitLab runners uniquely for your project.
+3. Once you've configured the runner, you will receive a GitLab URL and a registration token. You'll use these later when setting up an AWS EC2 instance and registering it as a GitLab runner.
+4. Now on ubuntu machine, execute the following command
+```sh
+sudo gitlab-runner register
+```
+  - This command will prompt you for the following information, which you obtained in the last step:
+    - GitLab URL
+    - Registration token
+  - Additionally, it will ask you to specify an executor, which determines how jobs are run. You can choose from options like shell, docker, bash, and more, depending on your requirements.
+5. Now that GitLab runner is ready on your Ubuntu machine, make sure to update and configure it as necessary.
+
+
+## Configuring .gitlab-ci.yml file
+It's now time to set up CI/CD for your Node.js application for deploying it to aws using docker and docker registry. In this example, we'll use GitLab Container Registry. Follow and checkout the steps in order to setup yml file for ci/cd pipeline:
+
+1. Build docker image:
+  - Define your Dockerfile, which includes the configuration for building your application Docker image
+  - then execute the following for building image
+```sh
+docker build -t <project-name>:<image-tag> .
+```
+
+2. Publish image to docker registry
+  - Publish our image to docker registry (gitlab container registry), you can explore the GitLab Container Registry by going to Packages & Registries > Container Registry in your GitLab project. Here, you can view and manage Docker images stored in the registry.
+```sh
+docker push <image_id>
+```
+
+3. SSH into your AWS EC2 machine or you can use gitlab runner tag for logging/running jobs on AWS machine.
+  - Here, remove the old Docker image and container if necessary.
+  - Pull the latest Docker image from the GitLab Container Registry:
+```sh
+docker pull <registry-url>/<project-name>:<image-tag>
+```
+  - Start a new container with the latest Docker image:
+```sh
+docker run -d -p <host-port>:<container-port> <registry-url>/<project-name>:<image-tag>
+```
+
+By following these steps, you can configure yml CI/CD file to build and push Docker images to GitLab Container Registry and then deploy the latest image on your AWS EC2 machine.
+
+
+  Dockerfile
+```sh
+FROM node:16.20  // this will pull an image from docker registry with node 16 as it's environment
+RUN mkdir -p /home/app  // creates a directory in our pulled docker image
+WORKDIR /home/app // set /home/app as our working directory in our image
+COPY . /home/app // copies everything from our current local location to working directory of image
+RUN npm install  // install dependencies for our node application defined in our package.json
+
+EXPOSE 9001  // exposes port 9001 for our application for port mapping with external network
+CMD ["node", "index.js"]  // run node index.js command when we start our container
+```
