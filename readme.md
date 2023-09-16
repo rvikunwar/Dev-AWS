@@ -1,8 +1,8 @@
 <div style="display: flex;">
-<img width="25%" src="/public/docker.svg" alt="docker"/>
-<img width="25%" src="/public/aws.svg" alt="aws"/>
-<img width="25%" src="/public/apache.svg" alt="apache"/>
-<img width="25%" src="/public/gitlab.svg" alt="gitlab"/>
+  <img width="20%" src="/public/docker.svg" alt="docker"/>
+  <img width="20%" src="/public/aws.svg" alt="aws"/>
+  <img width="20%" src="/public/apache.svg" alt="apache"/>
+  <img width="20%" src="/public/gitlab.svg" alt="gitlab"/>
 </div>
 
 # Docker 
