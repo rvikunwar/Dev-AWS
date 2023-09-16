@@ -16,8 +16,8 @@ Those packages are known as docker images and when they are running then they ar
 - Multiple containers can run on a single host 
 
 
-## [Docker registry](https://dockerhub.com)
-It is an open source platform for storing, maintaining and distributing docker images.
+## Docker registry
+[Docker registry]((https://dockerhub.com)) is an open source platform for storing, maintaining and distributing docker images.
 
 
 ## Docker commands
@@ -93,7 +93,46 @@ docker build -t image_tag <Dockerfile_path>
 ```
 
 ## Docker compose
-It a management tool of docker used for maintaining multiple docker containers at once.
+It a management tool of docker used for maintaining multiple docker containers/images at once.
+It uses docker-compose.yml, a yaml file for setting up configurations for different containers . And for applying specified configuration we need to run following command
+```sh
+docker-compose up
+```
+
+### Components of docker-compose
+
+**Services** : <br/>
+It contains the configuration of mutiple docker containers
+
+```sh
+services:
+  mobile_application:
+    image: my react app
+    # ... Other configurations for mobile application service
+  backend:
+    image: express_application
+    # ... Other configurations for backend service
+  db:
+    image: mysql
+    # ... Other configuration for database service
+```
+Here you can define configuration for multiple containers/services and with each service having its own set of configurations.
+
+**Volumes** : <br/>
+Volumes are shared directory between the containers and host, It is used to tretain data even after the container is halted.
+
+```sh
+services:
+  backend_service:
+    image: alpine:latest
+    volumes: 
+      - my_volume_name:/path/inside/container
+
+volumes:
+   my_volume_name: 
+```
+In this section we can define a volume name and associate it with a location inside the contianer where you intend to persist data.
+
 
 ## Gitlab CI/CD
 Gitlab
