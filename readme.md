@@ -1,7 +1,9 @@
+<div style="display: flex;">
 <img width="25%" src="/public/docker.svg" alt="docker"/>
 <img width="25%" src="/public/aws.svg" alt="aws"/>
 <img width="25%" src="/public/apache.svg" alt="apache"/>
 <img width="25%" src="/public/gitlab.svg" alt="gitlab"/>
+</div>
 
 # Docker 
 Docker is a platform that provides us a way to package our application in an isolated environment containing all the libraries, tools, and code required to run an application.
