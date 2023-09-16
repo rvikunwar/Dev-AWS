@@ -1,3 +1,5 @@
+<img src="/public/docker.svg" alt="docker"/>
+
 # Docker 
 Docker is a platform that provides us a way to package our application in an isolated environment containing all the libraries, tools, and code required to run an application.
 It is basically a virtualization tool tahta makes easy to develop, test and deploy our applications by using images and container.
