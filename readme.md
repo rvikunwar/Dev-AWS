@@ -1,4 +1,7 @@
 <img src="/public/docker.svg" alt="docker"/>
+<img src="/public/aws.svg" alt="aws"/>
+<img src="/public/apache.svg" alt="apache"/>
+<img src="/public/gitlab.svg" alt="gitlab"/>
 
 # Docker 
 Docker is a platform that provides us a way to package our application in an isolated environment containing all the libraries, tools, and code required to run an application.
