@@ -1,4 +1,4 @@
-<img src="/public/docker.svg" alt="docker"/>
+<img width="25%" src="/public/docker.svg" alt="docker"/>
 <img src="/public/aws.svg" alt="aws"/>
 <img src="/public/apache.svg" alt="apache"/>
 <img src="/public/gitlab.svg" alt="gitlab"/>
